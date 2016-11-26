@@ -21,6 +21,10 @@ npm_install:
   script:
    - npm install
    
+gulp install:
+  script:
+   - npm install -g gulp
+   
 gulp_test:
   script:
    - npm run gulp
