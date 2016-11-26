@@ -61,7 +61,7 @@ const SASS_DIR = "./sass";
 		.pipe(gulp.dest(JS_DIR));
 	});
 
-	gulp.task("build-js", ["minify-js", "all-in-one-js"]);
+	gulp.task("build-js", sequence(["minify-js", "all-in-one-js"]));
 	gulp.task("clean-build-js", sequence(["clean-js", "build-js"]));
 	/* JS */
 
