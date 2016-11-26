@@ -27,6 +27,13 @@ const SASS_DIR = "./sass";
 		.pipe(clean());
 	});
 	
+	gulp.task('all-in-one-css', function() {
+	  return gulp.src([CSS_DIR + "/*.min.css", "!" + CSS_DIR + "/all.min.css"])
+		.pipe(concat('all.min.css'))
+		.pipe(gulp.dest(CSS_DIR));
+	});
+
+	
 		/* SASS */
 		gulp.task('sass', function () {
 		  return gulp.src(SASS_DIR + "/*.scss")
@@ -35,7 +42,7 @@ const SASS_DIR = "./sass";
 		});
 		/* SASS */
 
-	gulp.task("build-css", ["sass"]);
+	gulp.task("build-css", sequence(["sass", "all-in-one-css"]));
 	gulp.task("clean-build-css", sequence(["clean-css", "clean-min-css", "build-css"]));
 	/* CSS */
 
