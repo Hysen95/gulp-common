@@ -6,13 +6,15 @@
   "scripts": {
     "gulp": "gulp"
   },
-  "author": "Gabriele Cipolloni",
+  "author": "Seizeions",
   "license": "ISC",
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-clean": "^0.3.2",
+    "gulp-clean-css": "^2.0.13",
     "gulp-concat": "^2.6.1",
     "gulp-minify": "0.0.14",
+    "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.3.2",
     "gulp-sequence": "^0.4.6"
   }
