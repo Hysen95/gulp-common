@@ -106,7 +106,7 @@ const SASS_DIR = "./sass";
 		sequence(["clean" , "build"])(callback);
 	});
 	
-	gulp.task("default", sequence(["clean", "build"]));
+	gulp.task("default", ["clean-build"]);
 	/* COMMONS */
 
 /* TASKS */
