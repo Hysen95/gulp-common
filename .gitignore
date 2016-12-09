@@ -1,4 +1,3 @@
 node_modules/
 .project
-*.min.*
-all*.*
+dist/
