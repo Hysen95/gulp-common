@@ -12,8 +12,8 @@ const clean = require("gulp-clean"),
 	postCSS = require("gulp-postcss"),
 	rename = require("gulp-rename"),
 	sass = require("gulp-sass"),
-	sequence = require("gulp-sequence"),
 	sassLint = require("gulp-sass-lint"),
+	sequence = require("gulp-sequence"),
 	server = require("gulp-server-livereload");
 
 
@@ -29,7 +29,7 @@ const
 /* CONSTS */
 
 /* UTIL */
-const isFixed = function isFixed (file) {
+const isFixed = function (file) {
 
     return file.eslint !== null && file.eslint.fixed;
 
@@ -37,18 +37,18 @@ const isFixed = function isFixed (file) {
 /* UTIL */
 
 /* CSS */
-gulp.task("css:clean", function cssClean () {
+gulp.task("css:clean", function () {
 
   return gulp.src(CSS_DIST_DIR, {"read": false})
 	.pipe(clean());
 
 });
 
-gulp.task("css:minify", function cssMinify () {
+gulp.task("css:minify", function () {
 
   return gulp.src([
-		CSS_DIST_DIR + "/*.css",
-		"!" + CSS_DIST_DIR + "/*.min.css"
+		CSS_DIST_DIR + "/**/*.css",
+		"!" + CSS_DIST_DIR + "/**/*.min.css"
 	])
 	.pipe(minifyCSS({
 		"compatibility": "ie8"
@@ -60,32 +60,33 @@ gulp.task("css:minify", function cssMinify () {
 
 });
 
-gulp.task("css:format", function cssFormat () {
+gulp.task("css:format", function () {
 
   return gulp.src([
-		CSS_DIST_DIR + "/*.css",
-		"!" + CSS_DIST_DIR + "/*.min.css"
+		CSS_DIST_DIR + "/**/*.css",
+		"!" + CSS_DIST_DIR + "/**/*.min.css"
 	])
     .pipe(postCSS([cssDeclarationSorter({"order": "smacss"})]))
     .pipe(gulp.dest(CSS_DIST_DIR));
 
 });
 
-gulp.task("css:all-in-one", function cssAllInOne () {
+gulp.task("css:all-in-one", function () {
 
   return gulp.src([
-		CSS_DIST_DIR + "/*.css",
-		"!" + CSS_DIST_DIR + "/*.min.css", "!" + CSS_DIST_DIR + "/all.css"
+		CSS_DIST_DIR + "/**/*.css",
+		"!" + CSS_DIST_DIR + "/**/*.min.css",
+		"!" + CSS_DIST_DIR + "/all.css"
 	])
 	.pipe(concat("all.css"))
 	.pipe(gulp.dest(CSS_DIST_DIR));
 
 });
 
-gulp.task("css:min-all-in-one", function cssAllInOne () {
+gulp.task("css:min-all-in-one", function () {
 
   return gulp.src([
-		CSS_DIST_DIR + "/*.min.css",
+		CSS_DIST_DIR + "/**/*.min.css",
 		"!" + CSS_DIST_DIR + "/all.min.css"
 	])
 	.pipe(concat("all.min.css"))
@@ -93,7 +94,7 @@ gulp.task("css:min-all-in-one", function cssAllInOne () {
 
 });
 
-gulp.task("css:build", function cssBuild (callback) {
+gulp.task("css:build", function (callback) {
 
 	sequence(
 		"sass:lint",
@@ -109,9 +110,9 @@ gulp.task("css:clean+build", sequence("css:clean", "css:build"));
 /* CSS */
 
 /* SASS */
-gulp.task("sass:compile", function sassCompile () {
+gulp.task("sass:compile", function () {
 
-  return gulp.src(SASS_SRC_DIR + "/*.scss")
+  return gulp.src(SASS_SRC_DIR + "/**/*.scss")
 	.pipe(sass().on("error", sass.logError))
 	.pipe(gulp.dest(CSS_DIST_DIR));
 
@@ -119,33 +120,33 @@ gulp.task("sass:compile", function sassCompile () {
 
 gulp.task("sass:lint", function () {
 
-  return gulp.src(SASS_SRC_DIR + "/*.scss")
+  return gulp.src(SASS_SRC_DIR + "/**/*.scss")
     .pipe(sassLint())
     .pipe(sassLint.format())
     .pipe(sassLint.failOnError());
 
 });
 
-gulp.task("sass:watch", function sassWatch () {
+gulp.task("sass:watch", function () {
 
-	gulp.watch(SASS_SRC_DIR + "/*.scss", ["css:build"]);
+	gulp.watch(SASS_SRC_DIR + "/**/*.scss", ["css:build"]);
 
 });
 /* SASS */
 
 /* JS */
-gulp.task("js:clean", function jsClean () {
+gulp.task("js:clean", function () {
 
   return gulp.src(JS_DIST_DIR, {"read": false})
 	.pipe(clean());
 
 });
 
-gulp.task("js:eslint", function jsEslint () {
+gulp.task("js:eslint", function () {
 
   return gulp.src([
-		JS_SRC_DIR + "/*.js",
-		"!" + JS_SRC_DIR + "/*.min.js"
+		JS_SRC_DIR + "/**/*.js",
+		"!" + JS_SRC_DIR + "/**/*.min.js"
 	])
 	.pipe(eslint({
 		"fix": true
@@ -156,11 +157,12 @@ gulp.task("js:eslint", function jsEslint () {
 
 });
 
-gulp.task("js:minify", function jsMinify () {
+gulp.task("js:minify", function () {
 
   return gulp.src([
-		JS_SRC_DIR + "/*.js",
-		"!" + JS_SRC_DIR + "/*.min.js"
+		JS_SRC_DIR + "/**/*.js",
+		"!" + JS_SRC_DIR + "/**/*.min.js",
+		"!" + JS_SRC_DIR + "/**/all.js"
 	])
 	.pipe(minifyJS({
 		"ext": {
@@ -171,10 +173,10 @@ gulp.task("js:minify", function jsMinify () {
 
 });
 
-gulp.task("js:min-all-in-one", function jsAllInOne () {
+gulp.task("js:min-all-in-one", function () {
 
   return gulp.src([
-		JS_SRC_DIR + "/*.min.js",
+		JS_SRC_DIR + "/**/*.min.js",
 		"!" + JS_SRC_DIR + "/all.min.js"
 	])
 	.pipe(concat("all.min.js"))
@@ -182,24 +184,25 @@ gulp.task("js:min-all-in-one", function jsAllInOne () {
 
 });
 
-gulp.task("js:all-in-one", function jsAllInOne () {
+gulp.task("js:all-in-one", function () {
 
   return gulp.src([
-		JS_SRC_DIR + "/*.js",
-		"!" + JS_SRC_DIR + "/*.min.js"
+		JS_SRC_DIR + "/**/*.js",
+		"!" + JS_SRC_DIR + "/**/*.min.js",
+		"!" + JS_SRC_DIR + "/**/all.js"
 	])
 	.pipe(concat("all.js"))
 	.pipe(gulp.dest(JS_DIST_DIR));
 
 });
 
-gulp.task("js:watch", function jsWatch () {
+gulp.task("js:watch", function () {
 
-	gulp.watch(JS_SRC_DIR + "/*.js", ["js:build"]);
+	gulp.watch(JS_SRC_DIR + "/**/*.js", ["js:build"]);
 
 });
 
-gulp.task("js:build", function jsBuild (callback) {
+gulp.task("js:build", function (callback) {
 
 	sequence("js:eslint", "js:all-in-one")(callback);
 
@@ -208,7 +211,7 @@ gulp.task("js:clean+build", sequence("js:clean", "js:build"));
 /* JS */
 
 /* GULP */
-gulp.task("gulp:eslint", function gulpEslint () {
+gulp.task("gulp:eslint", function () {
 
   return gulp.src("./gulpfile.js")
 	.pipe(eslint({
@@ -225,7 +228,7 @@ gulp.task("gulp:eslint", function gulpEslint () {
 
 gulp.task("webserver", ["watch"], function () {
 
-  gulp.src('.')
+  gulp.src(".")
     .pipe(server({
       "livereload": {
 		"enable": true,
@@ -246,8 +249,8 @@ gulp.task("webserver", ["watch"], function () {
 gulp.task("watch", function watch () {
 
 	gulp.watch([
-		SASS_SRC_DIR + "/*.scss",
-		JS_SRC_DIR + "/*.js"
+		SASS_SRC_DIR + "/**/*.scss",
+		JS_SRC_DIR + "/**/*.js"
 	], ["clean+build"]);
 
 });
@@ -256,7 +259,7 @@ gulp.task("clean", ["css:clean", "js:clean"]);
 
 gulp.task("build", ["css:build", "js:build"]);
 
-gulp.task("clean+build", function cleanBuild (callback) {
+gulp.task("clean+build", function (callback) {
 
 	sequence("clean", "build")(callback);
 
