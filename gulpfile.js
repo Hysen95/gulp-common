@@ -12,7 +12,8 @@ const clean = require("gulp-clean"),
 	postCSS = require("gulp-postcss"),
 	rename = require("gulp-rename"),
 	sass = require("gulp-sass"),
-	sequence = require("gulp-sequence");
+	sequence = require("gulp-sequence"),
+	sassLint = require('gulp-sass-lint');
 
 const DIST_DIR = "./dist",
 	SRC_DIR = "./src";
@@ -82,6 +83,7 @@ gulp.task("css:all-in-one", function cssAllInOne () {
 gulp.task("css:build", function cssBuild (callback) {
 
 	sequence(
+		"sass:lint",
 		"sass:compile",
 		"css:format",
 		"css:minify",
@@ -99,6 +101,13 @@ gulp.task("sass:compile", function sassCompile () {
 	.pipe(sass().on("error", sass.logError))
 	.pipe(gulp.dest(CSS_DIST_DIR));
 
+});
+
+gulp.task('sass:lint', function () {
+  return gulp.src(SASS_SRC_DIR + "/*.scss")
+    .pipe(sassLint())
+    .pipe(sassLint.format())
+    .pipe(sassLint.failOnError())
 });
 
 gulp.task("sass:watch", function sassWatch () {
@@ -170,7 +179,7 @@ gulp.task("js:all-in-one", function jsAllInOne () {
 
 gulp.task("js:watch", function jsWatch () {
 
-	gulp.watch(JS_SRC_DIR + "/*.js", ["js-build"]);
+	gulp.watch(JS_SRC_DIR + "/*.js", ["js:build"]);
 
 });
 
