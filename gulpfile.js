@@ -13,7 +13,9 @@ const clean = require("gulp-clean"),
 	rename = require("gulp-rename"),
 	sass = require("gulp-sass"),
 	sequence = require("gulp-sequence"),
-	sassLint = require('gulp-sass-lint');
+	sassLint = require("gulp-sass-lint"),
+	server = require("gulp-server-livereload");
+
 
 const DIST_DIR = "./dist",
 	SRC_DIR = "./src";
@@ -72,6 +74,17 @@ gulp.task("css:format", function cssFormat () {
 gulp.task("css:all-in-one", function cssAllInOne () {
 
   return gulp.src([
+		CSS_DIST_DIR + "/*.css",
+		"!" + CSS_DIST_DIR + "/*.min.css", "!" + CSS_DIST_DIR + "/all.css"
+	])
+	.pipe(concat("all.css"))
+	.pipe(gulp.dest(CSS_DIST_DIR));
+
+});
+
+gulp.task("css:min-all-in-one", function cssAllInOne () {
+
+  return gulp.src([
 		CSS_DIST_DIR + "/*.min.css",
 		"!" + CSS_DIST_DIR + "/all.min.css"
 	])
@@ -87,7 +100,8 @@ gulp.task("css:build", function cssBuild (callback) {
 		"sass:compile",
 		"css:format",
 		"css:minify",
-		"css:all-in-one"
+		"css:all-in-one",
+		"css:min-all-in-one"
 	)(callback);
 
 });
@@ -103,11 +117,13 @@ gulp.task("sass:compile", function sassCompile () {
 
 });
 
-gulp.task('sass:lint', function () {
+gulp.task("sass:lint", function () {
+
   return gulp.src(SASS_SRC_DIR + "/*.scss")
     .pipe(sassLint())
     .pipe(sassLint.format())
-    .pipe(sassLint.failOnError())
+    .pipe(sassLint.failOnError());
+
 });
 
 gulp.task("sass:watch", function sassWatch () {
@@ -206,6 +222,27 @@ gulp.task("gulp:eslint", function gulpEslint () {
 /* GULP */
 
 /* COMMONS */
+
+gulp.task("webserver", ["watch"], function () {
+
+  gulp.src('.')
+    .pipe(server({
+      "livereload": {
+		"enable": true,
+		"filter": function (filename, cb) {
+
+		  return cb("!/\.(sa|le)ss$|node_modules/");
+
+		}
+	  },
+      "directoryListing": false,
+      "open": true,
+	  "fallback": "index.html",
+	  "defaultFile": "index.html"
+    }));
+
+});
+
 gulp.task("watch", function watch () {
 
 	gulp.watch([
