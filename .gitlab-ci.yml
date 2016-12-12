@@ -17,9 +17,9 @@ cache:
   paths:
   - node_modules/
 
-test:
-    script:
+build:
+    before_script:
         - npm install
-        - npm install -g gulp
+    script:
         - npm run gulp
    
