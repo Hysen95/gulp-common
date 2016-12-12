@@ -1,5 +1,4 @@
 
-
 /* CONSTS */
 const clean = require("gulp-clean"),
 	concat = require("gulp-concat"),
@@ -20,9 +19,7 @@ const clean = require("gulp-clean"),
 const DIST_DIR = "./dist",
 	SRC_DIR = "./src";
 
-const
-	// CSS_SRC_DIR = SRC_DIR + "/css",
-	CSS_DIST_DIR = DIST_DIR + "/css",
+const CSS_DIST_DIR = DIST_DIR + "/css",
 	JS_DIST_DIR = DIST_DIR + "/js",
 	JS_SRC_DIR = SRC_DIR + "/js",
 	SASS_SRC_DIR = SRC_DIR + "/sass";
@@ -220,6 +217,13 @@ gulp.task("gulp:eslint", function () {
 	.pipe(eslint.format())
 	.pipe(eslint.failAfterError())
 	.pipe(gulpIf(isFixed, gulp.dest("./")));
+
+});
+gulp.task("gulp:watch", function () {
+
+	gulp.watch([
+		"./gulpfile.js"
+	], ["gulp:eslint"]);
 
 });
 /* GULP */
