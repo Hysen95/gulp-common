@@ -1,11 +1,17 @@
-image: node:latest
+language: node_js
+node_js:
+  - "stable"
+
+rvm:
+  - "stable"
 
 cache:
   paths:
-  - node_modules/
+    - node_modules/
 
-test:
-    script:
-        - npm install
-        - npm install -g gulp
-        - npm run gulp
+before_script:
+  - npm install
+  - npm install -g gulp
+
+script:
+  - npm run gulp
