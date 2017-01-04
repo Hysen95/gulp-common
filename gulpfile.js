@@ -25,11 +25,7 @@ const CSS_DIST_DIR = DIST_DIR + "/css",
 /* CONSTS */
 
 /* UTIL */
-const isFixed = (file) => {
-
-    return file.eslint !== null && file.eslint.fixed;
-
-};
+const isFixed = (file) => file.eslint !== null && file.eslint.fixed;
 /* UTIL */
 
 /* CSS */
