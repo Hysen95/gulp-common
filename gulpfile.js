@@ -230,12 +230,12 @@ gulp.task("webserver", ["watch"], () => {
   gulp.src(".")
     .pipe(server({
       "livereload": {
-		"enable": true,
-		"filter": function (filename, cb) {
+			"enable": true,
+			"filter": function (filename, cb) {
 
-		  return cb("!/\.(sa|le)ss$|node_modules/");
+			  return cb("!/\.(sa|le)ss$|node_modules/");
 
-		}
+			}
 	  },
       "directoryListing": false,
       "open": true,
