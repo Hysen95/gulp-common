@@ -15,7 +15,6 @@ const clean = require("gulp-clean"),
 	sequence = require("gulp-sequence"),
 	server = require("gulp-server-livereload");
 
-
 const DIST_DIR = "./dist",
 	SRC_DIR = "./src";
 
@@ -26,7 +25,7 @@ const CSS_DIST_DIR = DIST_DIR + "/css",
 /* CONSTS */
 
 /* UTIL */
-const isFixed = function (file) {
+const isFixed = (file) => {
 
     return file.eslint !== null && file.eslint.fixed;
 
@@ -34,14 +33,14 @@ const isFixed = function (file) {
 /* UTIL */
 
 /* CSS */
-gulp.task("css:clean", function () {
+gulp.task("css:clean", () => {
 
   return gulp.src(CSS_DIST_DIR, {"read": false})
 	.pipe(clean());
 
 });
 
-gulp.task("css:minify", function () {
+gulp.task("css:minify", () => {
 
   return gulp.src([
 		CSS_DIST_DIR + "/**/*.css",
@@ -57,7 +56,7 @@ gulp.task("css:minify", function () {
 
 });
 
-gulp.task("css:format", function () {
+gulp.task("css:format", () => {
 
   return gulp.src([
 		CSS_DIST_DIR + "/**/*.css",
@@ -68,7 +67,7 @@ gulp.task("css:format", function () {
 
 });
 
-gulp.task("css:all-in-one", function () {
+gulp.task("css:all-in-one", () => {
 
   return gulp.src([
 		CSS_DIST_DIR + "/**/*.css",
@@ -80,7 +79,7 @@ gulp.task("css:all-in-one", function () {
 
 });
 
-gulp.task("css:min-all-in-one", function () {
+gulp.task("css:min-all-in-one", () => {
 
   return gulp.src([
 		CSS_DIST_DIR + "/**/*.min.css",
@@ -91,7 +90,7 @@ gulp.task("css:min-all-in-one", function () {
 
 });
 
-gulp.task("css:build", function (callback) {
+gulp.task("css:build", (callback) => {
 
 	sequence(
 		"sass:lint",
@@ -107,7 +106,7 @@ gulp.task("css:clean+build", sequence("css:clean", "css:build"));
 /* CSS */
 
 /* SASS */
-gulp.task("sass:compile", function () {
+gulp.task("sass:compile", () => {
 
   return gulp.src(SASS_SRC_DIR + "/**/*.scss")
 	.pipe(sass().on("error", sass.logError))
@@ -115,7 +114,7 @@ gulp.task("sass:compile", function () {
 
 });
 
-gulp.task("sass:lint", function () {
+gulp.task("sass:lint", () => {
 
   return gulp.src(SASS_SRC_DIR + "/**/*.scss")
     .pipe(sassLint())
@@ -124,7 +123,7 @@ gulp.task("sass:lint", function () {
 
 });
 
-gulp.task("sass:watch", function () {
+gulp.task("sass:watch", () => {
 
 	gulp.watch(SASS_SRC_DIR + "/**/*.scss", ["css:build"]);
 
@@ -132,14 +131,14 @@ gulp.task("sass:watch", function () {
 /* SASS */
 
 /* JS */
-gulp.task("js:clean", function () {
+gulp.task("js:clean", () => {
 
   return gulp.src(JS_DIST_DIR, {"read": false})
 	.pipe(clean());
 
 });
 
-gulp.task("js:eslint", function () {
+gulp.task("js:eslint", () => {
 
   return gulp.src([
 		JS_SRC_DIR + "/**/*.js",
@@ -154,7 +153,7 @@ gulp.task("js:eslint", function () {
 
 });
 
-gulp.task("js:minify", function () {
+gulp.task("js:minify", () => {
 
   return gulp.src([
 		JS_SRC_DIR + "/**/*.js",
@@ -170,7 +169,7 @@ gulp.task("js:minify", function () {
 
 });
 
-gulp.task("js:min-all-in-one", function () {
+gulp.task("js:min-all-in-one", () => {
 
   return gulp.src([
 		JS_SRC_DIR + "/**/*.min.js",
@@ -181,7 +180,7 @@ gulp.task("js:min-all-in-one", function () {
 
 });
 
-gulp.task("js:all-in-one", function () {
+gulp.task("js:all-in-one", () => {
 
   return gulp.src([
 		JS_SRC_DIR + "/**/*.js",
@@ -193,13 +192,13 @@ gulp.task("js:all-in-one", function () {
 
 });
 
-gulp.task("js:watch", function () {
+gulp.task("js:watch", () => {
 
 	gulp.watch(JS_SRC_DIR + "/**/*.js", ["js:build"]);
 
 });
 
-gulp.task("js:build", function (callback) {
+gulp.task("js:build", (callback) => {
 
 	sequence("js:eslint", "js:all-in-one")(callback);
 
@@ -208,7 +207,7 @@ gulp.task("js:clean+build", sequence("js:clean", "js:build"));
 /* JS */
 
 /* GULP */
-gulp.task("gulp:eslint", function () {
+gulp.task("gulp:eslint", () => {
 
   return gulp.src("./gulpfile.js")
 	.pipe(eslint({
@@ -219,7 +218,7 @@ gulp.task("gulp:eslint", function () {
 	.pipe(gulpIf(isFixed, gulp.dest("./")));
 
 });
-gulp.task("gulp:watch", function () {
+gulp.task("gulp:watch", () => {
 
 	gulp.watch([
 		"./gulpfile.js"
@@ -230,7 +229,7 @@ gulp.task("gulp:watch", function () {
 
 /* COMMONS */
 
-gulp.task("webserver", ["watch"], function () {
+gulp.task("webserver", ["watch"], () => {
 
   gulp.src(".")
     .pipe(server({
@@ -250,7 +249,7 @@ gulp.task("webserver", ["watch"], function () {
 
 });
 
-gulp.task("watch", function watch () {
+gulp.task("watch", () => {
 
 	gulp.watch([
 		SASS_SRC_DIR + "/**/*.scss",
@@ -263,7 +262,7 @@ gulp.task("clean", ["css:clean", "js:clean"]);
 
 gulp.task("build", ["css:build", "js:build"]);
 
-gulp.task("clean+build", function (callback) {
+gulp.task("clean+build", (callback) => {
 
 	sequence("clean", "build")(callback);
 
